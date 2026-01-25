@@ -70,28 +70,28 @@ class BossPrices(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
     id: str = "default"
-    medio2_price: float = 0.045
-    grande2_price: float = 0.09
-    medio4_price: float = 0.14
-    grande4_price: float = 0.18
-    medio6_price: float = 0.36
-    grande6_price: float = 0.45
-    outro_pico_price: float = 0
-    xama_price: float = 0
-    praca_4f_price: float = 0
-    cracha_epica_price: float = 0
+    medio2_price: float = Field(default=0.045, ge=0)
+    grande2_price: float = Field(default=0.09, ge=0)
+    medio4_price: float = Field(default=0.14, ge=0)
+    grande4_price: float = Field(default=0.18, ge=0)
+    medio6_price: float = Field(default=0.36, ge=0)
+    grande6_price: float = Field(default=0.45, ge=0)
+    outro_pico_price: float = Field(default=0, ge=0)
+    xama_price: float = Field(default=0, ge=0)
+    praca_4f_price: float = Field(default=0, ge=0)
+    cracha_epica_price: float = Field(default=0, ge=0)
 
 class BossPricesUpdate(BaseModel):
-    medio2_price: Optional[float] = None
-    grande2_price: Optional[float] = None
-    medio4_price: Optional[float] = None
-    grande4_price: Optional[float] = None
-    medio6_price: Optional[float] = None
-    grande6_price: Optional[float] = None
-    outro_pico_price: Optional[float] = None
-    xama_price: Optional[float] = None
-    praca_4f_price: Optional[float] = None
-    cracha_epica_price: Optional[float] = None
+    medio2_price: Optional[float] = Field(default=None, ge=0)
+    grande2_price: Optional[float] = Field(default=None, ge=0)
+    medio4_price: Optional[float] = Field(default=None, ge=0)
+    grande4_price: Optional[float] = Field(default=None, ge=0)
+    medio6_price: Optional[float] = Field(default=None, ge=0)
+    grande6_price: Optional[float] = Field(default=None, ge=0)
+    outro_pico_price: Optional[float] = Field(default=None, ge=0)
+    xama_price: Optional[float] = Field(default=None, ge=0)
+    praca_4f_price: Optional[float] = Field(default=None, ge=0)
+    cracha_epica_price: Optional[float] = Field(default=None, ge=0)
 
 class AccountWithValues(BaseModel):
     model_config = ConfigDict(extra="ignore")
