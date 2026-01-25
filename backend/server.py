@@ -34,7 +34,14 @@ class BossQuantities(BaseModel):
     grande4: int = Field(default=0, ge=0)
     medio6: int = Field(default=0, ge=0)
     grande6: int = Field(default=0, ge=0)
-    outro_pico: int = Field(default=0, ge=0)
+    medio7: int = Field(default=0, ge=0)
+    grande7: int = Field(default=0, ge=0)
+    medio8: int = Field(default=0, ge=0)
+    grande8: int = Field(default=0, ge=0)
+    medio9: int = Field(default=0, ge=0)
+    grande9: int = Field(default=0, ge=0)
+    medio10: int = Field(default=0, ge=0)
+    grande10: int = Field(default=0, ge=0)
 
 class SpecialBosses(BaseModel):
     xama: int = Field(default=0, ge=0)
