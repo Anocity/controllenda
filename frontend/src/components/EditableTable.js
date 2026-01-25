@@ -70,13 +70,18 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
       );
     }
 
+    // Color logic: green if > 0, empty if 0
+    const numValue = typeof value === 'number' ? value : 0;
+    const textColor = numValue > 0 ? "text-green-400" : "text-transparent";
+    const displayValue = numValue > 0 ? value : "";
+
     return (
       <div
         onClick={() => handleCellClick(account.id, field, value)}
-        className="cursor-pointer hover:bg-white/10 h-8 flex items-center px-2 rounded transition-colors"
+        className={`cursor-pointer hover:bg-white/10 h-8 flex items-center px-2 rounded transition-colors ${textColor}`}
         data-testid={`cell-${field}-${account.id}`}
       >
-        {value || value === 0 ? value : "-"}
+        {displayValue || (numValue === 0 && field !== "name" && field !== "sala_pico" ? "" : (value || "-"))}
       </div>
     );
   };
@@ -88,8 +93,7 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
     const totals = {
       medio2: 0, grande2: 0, medio4: 0, grande4: 0, 
       medio6: 0, grande6: 0, medio7: 0, grande7: 0,
-      medio8: 0, grande8: 0, medio9: 0, grande9: 0,
-      medio10: 0, grande10: 0,
+      medio8: 0, grande8: 0,
       xama: 0, praca_4f: 0, cracha_epica: 0, gold: 0
     };
 
@@ -117,8 +121,7 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
     const usdTotals = {
       medio2: 0, grande2: 0, medio4: 0, grande4: 0,
       medio6: 0, grande6: 0, medio7: 0, grande7: 0,
-      medio8: 0, grande8: 0, medio9: 0, grande9: 0,
-      medio10: 0, grande10: 0,
+      medio8: 0, grande8: 0,
       xama: 0, praca_4f: 0, cracha_epica: 0
     };
 
@@ -129,14 +132,10 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
       usdTotals.grande4 += account.bosses.grande4 * bossPrices.grande4_price;
       usdTotals.medio6 += account.bosses.medio6 * bossPrices.medio6_price;
       usdTotals.grande6 += account.bosses.grande6 * bossPrices.grande6_price;
-      usdTotals.medio7 += account.bosses.medio7 * bossPrices.medio7_price;
-      usdTotals.grande7 += account.bosses.grande7 * bossPrices.grande7_price;
-      usdTotals.medio8 += account.bosses.medio8 * bossPrices.medio8_price;
-      usdTotals.grande8 += account.bosses.grande8 * bossPrices.grande8_price;
-      usdTotals.medio9 += account.bosses.medio9 * bossPrices.medio9_price;
-      usdTotals.grande9 += account.bosses.grande9 * bossPrices.grande9_price;
-      usdTotals.medio10 += account.bosses.medio10 * bossPrices.medio10_price;
-      usdTotals.grande10 += account.bosses.grande10 * bossPrices.grande10_price;
+      usdTotals.medio7 += (account.bosses.medio7 || 0) * bossPrices.medio7_price;
+      usdTotals.grande7 += (account.bosses.grande7 || 0) * bossPrices.grande7_price;
+      usdTotals.medio8 += (account.bosses.medio8 || 0) * bossPrices.medio8_price;
+      usdTotals.grande8 += (account.bosses.grande8 || 0) * bossPrices.grande8_price;
       usdTotals.xama += account.special_bosses.xama * bossPrices.xama_price;
       usdTotals.praca_4f += account.special_bosses.praca_4f * bossPrices.praca_4f_price;
       usdTotals.cracha_epica += account.special_bosses.cracha_epica * bossPrices.cracha_epica_price;
@@ -176,10 +175,6 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
             <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G7</th>
             <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M8</th>
             <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G8</th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M9</th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G9</th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M10</th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G10</th>
             <th className="py-3 px-4 text-left text-xs uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">
               Sala Pico
             </th>
@@ -200,62 +195,55 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
               <td className="py-2 px-4 font-primary text-white text-sm border-r border-white/5">
                 {renderCell(account, "name", account.name)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.medio2", account.bosses.medio2)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.grande2", account.bosses.grande2)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.medio4", account.bosses.medio4)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.grande4", account.bosses.grande4)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.medio6", account.bosses.medio6)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.grande6", account.bosses.grande6)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.medio7", account.bosses.medio7 || 0)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.grande7", account.bosses.grande7 || 0)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.medio8", account.bosses.medio8 || 0)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "bosses.grande8", account.bosses.grande8 || 0)}
-              </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
-                {renderCell(account, "bosses.medio9", account.bosses.medio9 || 0)}
-              </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
-                {renderCell(account, "bosses.grande9", account.bosses.grande9 || 0)}
-              </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
-                {renderCell(account, "bosses.medio10", account.bosses.medio10 || 0)}
-              </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
-                {renderCell(account, "bosses.grande10", account.bosses.grande10 || 0)}
               </td>
               <td className="py-2 px-4 font-primary text-sm text-mir-gold border-l border-white/5">
                 {renderCell(account, "sala_pico", account.sala_pico)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300 border-l border-white/5">
+              <td className="py-2 px-3 text-center font-mono text-sm border-l border-white/5">
                 {renderCell(account, "special_bosses.xama", account.special_bosses.xama)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "special_bosses.praca_4f", account.special_bosses.praca_4f)}
               </td>
-              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+              <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "special_bosses.cracha_epica", account.special_bosses.cracha_epica)}
               </td>
               <td className="py-2 px-4 text-right font-mono text-sm text-mir-blue border-l border-white/5">
-                {renderCell(account, "gold", account.gold.toLocaleString('pt-BR'))}
+                <div
+                  onClick={() => handleCellClick(account.id, "gold", account.gold)}
+                  className="cursor-pointer hover:bg-white/10 h-8 flex items-center justify-end px-2 rounded transition-colors"
+                >
+                  {account.gold > 0 ? account.gold.toLocaleString('pt-BR') : ""}
+                </div>
               </td>
               <td className="py-2 px-4 text-center border-l border-white/5">
                 <Button
@@ -287,10 +275,6 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
               <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande7}</td>
               <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio8}</td>
               <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande8}</td>
-              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio9}</td>
-              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande9}</td>
-              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio10}</td>
-              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande10}</td>
               <td className="py-3 px-4 border-l border-white/5"></td>
               <td className="py-3 px-3 text-center font-mono text-sm text-white border-l border-white/5">{totals.xama}</td>
               <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.praca_4f}</td>
@@ -318,10 +302,6 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
               <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande7.toFixed(2)}</td>
               <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio8.toFixed(2)}</td>
               <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande8.toFixed(2)}</td>
-              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio9.toFixed(2)}</td>
-              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande9.toFixed(2)}</td>
-              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio10.toFixed(2)}</td>
-              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande10.toFixed(2)}</td>
               <td className="py-3 px-4 border-l border-white/5"></td>
               <td className="py-3 px-3 text-center font-mono text-xs text-green-400 border-l border-white/5">${usdTotals.xama.toFixed(2)}</td>
               <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.praca_4f.toFixed(2)}</td>
