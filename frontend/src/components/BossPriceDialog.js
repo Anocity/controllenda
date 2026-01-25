@@ -48,9 +48,10 @@ export default function BossPriceDialog({ open, onOpenChange, bossPrices, onSave
   };
 
   const handlePriceChange = (priceType, value) => {
+    const numValue = parseFloat(value) || 0;
     setFormData({
       ...formData,
-      [priceType]: parseFloat(value) || 0
+      [priceType]: Math.max(0, numValue)
     });
   };
 
