@@ -70,24 +70,27 @@ export default function AccountDialog({ open, onOpenChange, account, onSave }) {
   };
 
   const handleBossChange = (bossType, value) => {
+    const numValue = parseInt(value) || 0;
     setFormData({
       ...formData,
       bosses: {
         ...formData.bosses,
-        [bossType]: parseInt(value) || 0
+        [bossType]: Math.max(0, numValue)
       }
     });
   };
 
   const handleSpecialChange = (specialType, value) => {
+    const numValue = parseInt(value) || 0;
     setFormData({
       ...formData,
       special_bosses: {
         ...formData.special_bosses,
-        [specialType]: parseInt(value) || 0
+        [specialType]: Math.max(0, numValue)
       }
     });
   };
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
