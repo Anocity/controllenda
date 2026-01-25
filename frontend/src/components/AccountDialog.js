@@ -96,6 +96,9 @@ export default function AccountDialog({ open, onOpenChange, account, onSave }) {
           <DialogTitle className="text-2xl font-secondary text-mir-gold uppercase tracking-wide" data-testid="dialog-title">
             {account ? "Editar Conta" : "Nova Conta"}
           </DialogTitle>
+          <DialogDescription className="text-slate-400">
+            Preencha os dados da conta e quantidades de bosses
+          </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
