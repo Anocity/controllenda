@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Coins, TrendingUp, Users, Settings, Plus } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
 import { Button } from "../components/ui/button";
-import AccountTable from "../components/AccountTable";
-import AccountDialog from "../components/AccountDialog";
+import EditableTable from "../components/EditableTable";
 import BossPriceDialog from "../components/BossPriceDialog";
-import StatCard from "../components/StatCard";
 import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -13,12 +11,9 @@ const API = `${BACKEND_URL}/api`;
 
 export default function Dashboard() {
   const [accounts, setAccounts] = useState([]);
-  const [statistics, setStatistics] = useState(null);
   const [bossPrices, setBossPrices] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showAccountDialog, setShowAccountDialog] = useState(false);
   const [showPriceDialog, setShowPriceDialog] = useState(false);
-  const [editingAccount, setEditingAccount] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -27,14 +22,12 @@ export default function Dashboard() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [accountsRes, statsRes, pricesRes] = await Promise.all([
+      const [accountsRes, pricesRes] = await Promise.all([
         axios.get(`${API}/accounts`),
-        axios.get(`${API}/statistics`),
         axios.get(`${API}/boss-prices`)
       ]);
       
       setAccounts(accountsRes.data);
-      setStatistics(statsRes.data);
       setBossPrices(pricesRes.data);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -44,42 +37,59 @@ export default function Dashboard() {
     }
   };
 
-  const handleAddAccount = () => {
-    setEditingAccount(null);
-    setShowAccountDialog(true);
+  const handleAddAccount = async () => {
+    try {
+      const newAccount = {
+        name: "Nova Conta",
+        bosses: {
+          medio2: 0,
+          grande2: 0,
+          medio4: 0,
+          grande4: 0,
+          medio6: 0,
+          grande6: 0,
+          outro_pico: 0
+        },
+        sala_pico: "",
+        special_bosses: {
+          xama: 0,
+          praca_4f: 0,
+          cracha_epica: 0
+        },
+        gold: 0
+      };
+      
+      const response = await axios.post(`${API}/accounts`, newAccount);
+      setAccounts([...accounts, response.data]);
+      toast.success("Nova conta adicionada!");
+    } catch (error) {
+      console.error("Erro ao adicionar conta:", error);
+      toast.error("Erro ao adicionar conta");
+    }
   };
 
-  const handleEditAccount = (account) => {
-    setEditingAccount(account);
-    setShowAccountDialog(true);
+  const handleUpdateAccount = async (accountId, field, value) => {
+    try {
+      await axios.put(`${API}/accounts/${accountId}`, { [field]: value });
+      // Update local state
+      const updatedAccounts = accounts.map(acc => 
+        acc.id === accountId ? { ...acc, [field]: value } : acc
+      );
+      setAccounts(updatedAccounts);
+    } catch (error) {
+      console.error("Erro ao atualizar conta:", error);
+      toast.error("Erro ao atualizar conta");
+    }
   };
 
   const handleDeleteAccount = async (accountId) => {
     try {
       await axios.delete(`${API}/accounts/${accountId}`);
-      toast.success("Conta deletada com sucesso!");
-      fetchData();
+      setAccounts(accounts.filter(acc => acc.id !== accountId));
+      toast.success("Conta deletada!");
     } catch (error) {
       console.error("Erro ao deletar conta:", error);
       toast.error("Erro ao deletar conta");
-    }
-  };
-
-  const handleSaveAccount = async (accountData) => {
-    try {
-      if (editingAccount) {
-        await axios.put(`${API}/accounts/${editingAccount.id}`, accountData);
-        toast.success("Conta atualizada com sucesso!");
-      } else {
-        await axios.post(`${API}/accounts`, accountData);
-        toast.success("Conta criada com sucesso!");
-      }
-      setShowAccountDialog(false);
-      setEditingAccount(null);
-      fetchData();
-    } catch (error) {
-      console.error("Erro ao salvar conta:", error);
-      toast.error("Erro ao salvar conta");
     }
   };
 
@@ -104,104 +114,54 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen py-6 px-4">
+      <div className="max-w-[98%] mx-auto">
         {/* Header */}
-        <div className="mb-8 relative">
-          <div
-            className="absolute inset-0 opacity-10 bg-cover bg-center rounded-2xl"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1594968549077-43f0a90bd7aa?auto=format&fit=crop&w=2000&q=80')`
-            }}
-          />
-          <div className="relative bg-mir-charcoal/80 backdrop-blur-xl border border-white/5 rounded-2xl p-8 shadow-2xl">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <h1 className="text-4xl sm:text-5xl font-secondary font-bold text-mir-gold tracking-wide uppercase mb-2" data-testid="dashboard-title">
-                  MIR4 Manager
-                </h1>
-                <p className="text-slate-400 font-primary" data-testid="dashboard-subtitle">
-                  Gerencie suas contas e bosses
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <Button
-                  onClick={handleAddAccount}
-                  className="bg-mir-gold text-black font-bold uppercase tracking-wider hover:bg-amber-400 shadow-[0_0_10px_rgba(255,215,0,0.3)] transition-all"
-                  data-testid="add-account-btn"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Nova Conta
-                </Button>
-                <Button
-                  onClick={() => setShowPriceDialog(true)}
-                  variant="outline"
-                  className="bg-white/5 text-white border-white/10 hover:bg-white/10 hover:border-white/20"
-                  data-testid="config-prices-btn"
-                >
-                  <Settings className="w-4 h-4 mr-2" />
-                  Preços
-                </Button>
-              </div>
+        <div className="mb-6 bg-mir-charcoal/80 border border-white/5 rounded-xl p-6 shadow-xl">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-secondary font-bold text-mir-gold tracking-wide uppercase" data-testid="dashboard-title">
+                MIR4 Manager
+              </h1>
+              <p className="text-slate-400 font-primary text-sm mt-1">
+                Gerencie suas contas e bosses
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <Button
+                onClick={handleAddAccount}
+                className="bg-mir-gold text-black font-bold uppercase tracking-wider hover:bg-amber-400 shadow-[0_0_10px_rgba(255,215,0,0.3)] transition-all"
+                data-testid="add-account-btn"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Nova Conta
+              </Button>
+              <Button
+                onClick={() => setShowPriceDialog(true)}
+                variant="outline"
+                className="bg-white/5 text-white border-white/10 hover:bg-white/10 hover:border-white/20"
+                data-testid="config-prices-btn"
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Preços USD
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Statistics Cards */}
-        {statistics && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatCard
-              title="Total de Contas"
-              value={statistics.total_accounts}
-              icon={<Users className="w-6 h-6" />}
-              color="gold"
-              testId="stat-total-accounts"
-            />
-            <StatCard
-              title="Total Gold"
-              value={statistics.total_gold.toLocaleString('pt-BR')}
-              icon={<Coins className="w-6 h-6" />}
-              color="blue"
-              testId="stat-total-gold"
-            />
-            <StatCard
-              title="Total USD"
-              value={`$${statistics.total_usd.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
-              icon={<TrendingUp className="w-6 h-6" />}
-              color="green"
-              testId="stat-total-usd"
-            />
-            <StatCard
-              title="Boss de Pico"
-              value={
-                Object.values(statistics.total_bosses).reduce((a, b) => a + b, 0)
-              }
-              icon={<Coins className="w-6 h-6" />}
-              color="red"
-              testId="stat-total-bosses"
-            />
-          </div>
-        )}
-
-        {/* Accounts Table */}
+        {/* Editable Table */}
         <div className="bg-mir-charcoal/50 border border-white/5 rounded-xl shadow-2xl overflow-hidden">
-          <AccountTable
+          <EditableTable
             accounts={accounts}
             bossPrices={bossPrices}
-            onEdit={handleEditAccount}
+            onUpdate={handleUpdateAccount}
             onDelete={handleDeleteAccount}
+            onRefresh={fetchData}
           />
         </div>
       </div>
 
-      {/* Dialogs */}
-      <AccountDialog
-        open={showAccountDialog}
-        onOpenChange={setShowAccountDialog}
-        account={editingAccount}
-        onSave={handleSaveAccount}
-      />
-
+      {/* Price Dialog */}
       <BossPriceDialog
         open={showPriceDialog}
         onOpenChange={setShowPriceDialog}
