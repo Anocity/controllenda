@@ -83,7 +83,22 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
       );
     }
 
-    // Color logic for numbers: green if > 0, empty if 0
+    // Special handling for gold - always show with formatting, green color
+    if (field === "gold") {
+      const goldValue = typeof value === 'number' ? value : 0;
+      const textColor = goldValue > 0 ? "text-mir-blue" : "text-transparent";
+      return (
+        <div
+          onClick={() => handleCellClick(account.id, field, value)}
+          className={`cursor-pointer hover:bg-white/10 h-8 flex items-center justify-end px-2 rounded transition-colors ${textColor}`}
+          data-testid={`cell-${field}-${account.id}`}
+        >
+          {goldValue > 0 ? goldValue.toLocaleString('pt-BR') : ""}
+        </div>
+      );
+    }
+
+    // Color logic for boss numbers: green if > 0, empty if 0
     const numValue = typeof value === 'number' ? value : 0;
     const textColor = numValue > 0 ? "text-green-400" : "text-transparent";
     const displayValue = numValue > 0 ? value : "";
