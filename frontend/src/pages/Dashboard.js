@@ -48,7 +48,14 @@ export default function Dashboard() {
           grande4: 0,
           medio6: 0,
           grande6: 0,
-          outro_pico: 0
+          medio7: 0,
+          grande7: 0,
+          medio8: 0,
+          grande8: 0,
+          medio9: 0,
+          grande9: 0,
+          medio10: 0,
+          grande10: 0
         },
         sala_pico: "",
         special_bosses: {
