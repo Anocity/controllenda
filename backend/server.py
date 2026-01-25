@@ -28,18 +28,18 @@ api_router = APIRouter(prefix="/api")
 
 # Models
 class BossQuantities(BaseModel):
-    medio2: int = 0
-    grande2: int = 0
-    medio4: int = 0
-    grande4: int = 0
-    medio6: int = 0
-    grande6: int = 0
-    outro_pico: int = 0
+    medio2: int = Field(default=0, ge=0)
+    grande2: int = Field(default=0, ge=0)
+    medio4: int = Field(default=0, ge=0)
+    grande4: int = Field(default=0, ge=0)
+    medio6: int = Field(default=0, ge=0)
+    grande6: int = Field(default=0, ge=0)
+    outro_pico: int = Field(default=0, ge=0)
 
 class SpecialBosses(BaseModel):
-    xama: int = 0
-    praca_4f: int = 0
-    cracha_epica: int = 0
+    xama: int = Field(default=0, ge=0)
+    praca_4f: int = Field(default=0, ge=0)
+    cracha_epica: int = Field(default=0, ge=0)
 
 class Account(BaseModel):
     model_config = ConfigDict(extra="ignore")
