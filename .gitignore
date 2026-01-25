@@ -60,3 +60,7 @@ temp/
 # Memory and automation
 /memory/
 /.emergent/
+-e 
+# Environment files
+*.env
+*.env.*
