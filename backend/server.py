@@ -49,7 +49,7 @@ class Account(BaseModel):
     bosses: BossQuantities
     sala_pico: str = ""
     special_bosses: SpecialBosses
-    gold: float = 0
+    gold: float = Field(default=0, ge=0)
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 class AccountCreate(BaseModel):
