@@ -110,7 +110,6 @@ class BossPricesUpdate(BaseModel):
     grande9_price: Optional[float] = Field(default=None, ge=0)
     medio10_price: Optional[float] = Field(default=None, ge=0)
     grande10_price: Optional[float] = Field(default=None, ge=0)
-    outro_pico_price: Optional[float] = Field(default=None, ge=0)
     xama_price: Optional[float] = Field(default=None, ge=0)
     praca_4f_price: Optional[float] = Field(default=None, ge=0)
     cracha_epica_price: Optional[float] = Field(default=None, ge=0)
