@@ -265,10 +265,8 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
               <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "special_bosses.cracha_epica", account.special_bosses.cracha_epica)}
               </td>
-              <td className="py-2 px-4 text-right font-mono text-sm border-l border-white/5">
-                <div className="text-mir-blue">
-                  {renderCell(account, "gold", account.gold)}
-                </div>
+              <td className="py-2 px-4 font-mono text-sm border-l border-white/5">
+                {renderCell(account, "gold", account.gold)}
               </td>
               <td className="py-2 px-4 text-center border-l border-white/5">
                 <Button
