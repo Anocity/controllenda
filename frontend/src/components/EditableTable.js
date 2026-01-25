@@ -70,7 +70,20 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
       );
     }
 
-    // Color logic: green if > 0, empty if 0
+    // Special handling for name and sala_pico - always white
+    if (field === "name" || field === "sala_pico") {
+      return (
+        <div
+          onClick={() => handleCellClick(account.id, field, value)}
+          className="cursor-pointer hover:bg-white/10 h-8 flex items-center px-2 rounded transition-colors text-white"
+          data-testid={`cell-${field}-${account.id}`}
+        >
+          {value || "-"}
+        </div>
+      );
+    }
+
+    // Color logic for numbers: green if > 0, empty if 0
     const numValue = typeof value === 'number' ? value : 0;
     const textColor = numValue > 0 ? "text-green-400" : "text-transparent";
     const displayValue = numValue > 0 ? value : "";
@@ -81,7 +94,7 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
         className={`cursor-pointer hover:bg-white/10 h-8 flex items-center px-2 rounded transition-colors ${textColor}`}
         data-testid={`cell-${field}-${account.id}`}
       >
-        {displayValue || (numValue === 0 && field !== "name" && field !== "sala_pico" ? "" : (value || "-"))}
+        {displayValue}
       </div>
     );
   };
