@@ -146,7 +146,14 @@ def calculate_account_usd(account: dict, prices: BossPrices) -> float:
     total += bosses.get('grande4', 0) * prices.grande4_price
     total += bosses.get('medio6', 0) * prices.medio6_price
     total += bosses.get('grande6', 0) * prices.grande6_price
-    total += bosses.get('outro_pico', 0) * prices.outro_pico_price
+    total += bosses.get('medio7', 0) * prices.medio7_price
+    total += bosses.get('grande7', 0) * prices.grande7_price
+    total += bosses.get('medio8', 0) * prices.medio8_price
+    total += bosses.get('grande8', 0) * prices.grande8_price
+    total += bosses.get('medio9', 0) * prices.medio9_price
+    total += bosses.get('grande9', 0) * prices.grande9_price
+    total += bosses.get('medio10', 0) * prices.medio10_price
+    total += bosses.get('grande10', 0) * prices.grande10_price
     total += special.get('xama', 0) * prices.xama_price
     total += special.get('praca_4f', 0) * prices.praca_4f_price
     total += special.get('cracha_epica', 0) * prices.cracha_epica_price
