@@ -69,3 +69,7 @@ temp/
 *.env
 *.env.*
 desktop/node_modules/electron/dist/electron
+-e 
+# Environment files
+*.env
+*.env.*
