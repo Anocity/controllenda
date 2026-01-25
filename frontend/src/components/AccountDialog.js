@@ -284,7 +284,10 @@ export default function AccountDialog({ open, onOpenChange, account, onSave }) {
               min="0"
               step="0.01"
               value={formData.gold}
-              onChange={(e) => setFormData({ ...formData, gold: parseFloat(e.target.value) || 0 })}
+              onChange={(e) => {
+                const val = parseFloat(e.target.value) || 0;
+                setFormData({ ...formData, gold: Math.max(0, val) });
+              }}
               className="bg-black/50 border-white/10 text-white mt-2"
               data-testid="input-gold"
             />
