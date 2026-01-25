@@ -210,58 +210,6 @@ export default function BossPriceDialog({ open, onOpenChange, bossPrices, onSave
                   data-testid="input-grande8-price"
                 />
               </div>
-              <div>
-                <Label htmlFor="medio9_price" className="text-xs text-slate-400">Médio 9 (USD)</Label>
-                <Input
-                  id="medio9_price"
-                  type="number"
-                  min="0"
-                  step="0.001"
-                  value={formData.medio9_price}
-                  onChange={(e) => handlePriceChange('medio9_price', e.target.value)}
-                  className="bg-black/50 border-white/10 text-white mt-1"
-                  data-testid="input-medio9-price"
-                />
-              </div>
-              <div>
-                <Label htmlFor="grande9_price" className="text-xs text-slate-400">Grande 9 (USD)</Label>
-                <Input
-                  id="grande9_price"
-                  type="number"
-                  min="0"
-                  step="0.001"
-                  value={formData.grande9_price}
-                  onChange={(e) => handlePriceChange('grande9_price', e.target.value)}
-                  className="bg-black/50 border-white/10 text-white mt-1"
-                  data-testid="input-grande9-price"
-                />
-              </div>
-              <div>
-                <Label htmlFor="medio10_price" className="text-xs text-slate-400">Médio 10 (USD)</Label>
-                <Input
-                  id="medio10_price"
-                  type="number"
-                  min="0"
-                  step="0.001"
-                  value={formData.medio10_price}
-                  onChange={(e) => handlePriceChange('medio10_price', e.target.value)}
-                  className="bg-black/50 border-white/10 text-white mt-1"
-                  data-testid="input-medio10-price"
-                />
-              </div>
-              <div>
-                <Label htmlFor="grande10_price" className="text-xs text-slate-400">Grande 10 (USD)</Label>
-                <Input
-                  id="grande10_price"
-                  type="number"
-                  min="0"
-                  step="0.001"
-                  value={formData.grande10_price}
-                  onChange={(e) => handlePriceChange('grande10_price', e.target.value)}
-                  className="bg-black/50 border-white/10 text-white mt-1"
-                  data-testid="input-grande10-price"
-                />
-              </div>
             </div>
           </div>
 
