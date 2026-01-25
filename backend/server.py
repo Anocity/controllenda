@@ -57,14 +57,14 @@ class AccountCreate(BaseModel):
     bosses: BossQuantities
     sala_pico: str = ""
     special_bosses: SpecialBosses
-    gold: float = 0
+    gold: float = Field(default=0, ge=0)
 
 class AccountUpdate(BaseModel):
     name: Optional[str] = None
     bosses: Optional[BossQuantities] = None
     sala_pico: Optional[str] = None
     special_bosses: Optional[SpecialBosses] = None
-    gold: Optional[float] = None
+    gold: Optional[float] = Field(default=None, ge=0)
 
 class BossPrices(BaseModel):
     model_config = ConfigDict(extra="ignore")
