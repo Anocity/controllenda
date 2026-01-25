@@ -270,7 +270,6 @@ export default function BossPriceDialog({ open, onOpenChange, bossPrices, onSave
                   data-testid="input-grande10-price"
                 />
               </div>
-              </div>
             </div>
           </div>
 
