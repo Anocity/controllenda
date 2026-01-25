@@ -23,10 +23,6 @@ export default function BossPriceDialog({ open, onOpenChange, bossPrices, onSave
     grande7_price: 0,
     medio8_price: 0,
     grande8_price: 0,
-    medio9_price: 0,
-    grande9_price: 0,
-    medio10_price: 0,
-    grande10_price: 0,
     xama_price: 0,
     praca_4f_price: 0,
     cracha_epica_price: 0
