@@ -250,12 +250,9 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
               <td className="py-2 px-3 text-center font-mono text-sm">
                 {renderCell(account, "special_bosses.cracha_epica", account.special_bosses.cracha_epica)}
               </td>
-              <td className="py-2 px-4 text-right font-mono text-sm text-mir-blue border-l border-white/5">
-                <div
-                  onClick={() => handleCellClick(account.id, "gold", account.gold)}
-                  className="cursor-pointer hover:bg-white/10 h-8 flex items-center justify-end px-2 rounded transition-colors"
-                >
-                  {account.gold > 0 ? account.gold.toLocaleString('pt-BR') : ""}
+              <td className="py-2 px-4 text-right font-mono text-sm border-l border-white/5">
+                <div className="text-mir-blue">
+                  {renderCell(account, "gold", account.gold)}
                 </div>
               </td>
               <td className="py-2 px-4 text-center border-l border-white/5">
