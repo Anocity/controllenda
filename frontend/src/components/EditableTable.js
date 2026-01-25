@@ -81,6 +81,73 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
     );
   };
 
+  // Calculate totals for each boss type
+  const calculateTotals = () => {
+    if (!accounts || accounts.length === 0) return null;
+
+    const totals = {
+      medio2: 0, grande2: 0, medio4: 0, grande4: 0, 
+      medio6: 0, grande6: 0, medio7: 0, grande7: 0,
+      medio8: 0, grande8: 0, medio9: 0, grande9: 0,
+      medio10: 0, grande10: 0,
+      xama: 0, praca_4f: 0, cracha_epica: 0, gold: 0
+    };
+
+    accounts.forEach(account => {
+      Object.keys(account.bosses).forEach(key => {
+        if (totals.hasOwnProperty(key)) {
+          totals[key] += account.bosses[key];
+        }
+      });
+      Object.keys(account.special_bosses).forEach(key => {
+        if (totals.hasOwnProperty(key)) {
+          totals[key] += account.special_bosses[key];
+        }
+      });
+      totals.gold += account.gold;
+    });
+
+    return totals;
+  };
+
+  // Calculate total USD for each boss type
+  const calculateTotalUSD = () => {
+    if (!bossPrices || !accounts || accounts.length === 0) return null;
+
+    const usdTotals = {
+      medio2: 0, grande2: 0, medio4: 0, grande4: 0,
+      medio6: 0, grande6: 0, medio7: 0, grande7: 0,
+      medio8: 0, grande8: 0, medio9: 0, grande9: 0,
+      medio10: 0, grande10: 0,
+      xama: 0, praca_4f: 0, cracha_epica: 0
+    };
+
+    accounts.forEach(account => {
+      usdTotals.medio2 += account.bosses.medio2 * bossPrices.medio2_price;
+      usdTotals.grande2 += account.bosses.grande2 * bossPrices.grande2_price;
+      usdTotals.medio4 += account.bosses.medio4 * bossPrices.medio4_price;
+      usdTotals.grande4 += account.bosses.grande4 * bossPrices.grande4_price;
+      usdTotals.medio6 += account.bosses.medio6 * bossPrices.medio6_price;
+      usdTotals.grande6 += account.bosses.grande6 * bossPrices.grande6_price;
+      usdTotals.medio7 += account.bosses.medio7 * bossPrices.medio7_price;
+      usdTotals.grande7 += account.bosses.grande7 * bossPrices.grande7_price;
+      usdTotals.medio8 += account.bosses.medio8 * bossPrices.medio8_price;
+      usdTotals.grande8 += account.bosses.grande8 * bossPrices.grande8_price;
+      usdTotals.medio9 += account.bosses.medio9 * bossPrices.medio9_price;
+      usdTotals.grande9 += account.bosses.grande9 * bossPrices.grande9_price;
+      usdTotals.medio10 += account.bosses.medio10 * bossPrices.medio10_price;
+      usdTotals.grande10 += account.bosses.grande10 * bossPrices.grande10_price;
+      usdTotals.xama += account.special_bosses.xama * bossPrices.xama_price;
+      usdTotals.praca_4f += account.special_bosses.praca_4f * bossPrices.praca_4f_price;
+      usdTotals.cracha_epica += account.special_bosses.cracha_epica * bossPrices.cracha_epica_price;
+    });
+
+    return usdTotals;
+  };
+
+  const totals = calculateTotals();
+  const usdTotals = calculateTotalUSD();
+
   if (!accounts || accounts.length === 0) {
     return (
       <div className="p-12 text-center">
@@ -99,48 +166,28 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
             <th className="py-3 px-4 text-left text-xs uppercase tracking-wider font-secondary text-slate-400 border-r border-white/5">
               Nome
             </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              M2
-            </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              G2
-            </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              M4
-            </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              G4
-            </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              M6
-            </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              G6
-            </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              Outro
-            </th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M2</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G2</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M4</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G4</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M6</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G6</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M7</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G7</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M8</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G8</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M9</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G9</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">M10</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">G10</th>
             <th className="py-3 px-4 text-left text-xs uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">
               Sala Pico
             </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">
-              Xama
-            </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              Praça 4F
-            </th>
-            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">
-              Cracha
-            </th>
-            <th className="py-3 px-4 text-right text-xs uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">
-              Gold
-            </th>
-            <th className="py-3 px-4 text-right text-xs uppercase tracking-wider font-secondary text-slate-400">
-              USD
-            </th>
-            <th className="py-3 px-4 text-center text-xs uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">
-              Ações
-            </th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">Xama</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">Praça 4F</th>
+            <th className="py-3 px-3 text-center text-xs uppercase tracking-wider font-secondary text-slate-400">Cracha</th>
+            <th className="py-3 px-4 text-right text-xs uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">Gold</th>
+            <th className="py-3 px-4 text-center text-xs uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -172,7 +219,28 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
                 {renderCell(account, "bosses.grande6", account.bosses.grande6)}
               </td>
               <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
-                {renderCell(account, "bosses.outro_pico", account.bosses.outro_pico)}
+                {renderCell(account, "bosses.medio7", account.bosses.medio7 || 0)}
+              </td>
+              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+                {renderCell(account, "bosses.grande7", account.bosses.grande7 || 0)}
+              </td>
+              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+                {renderCell(account, "bosses.medio8", account.bosses.medio8 || 0)}
+              </td>
+              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+                {renderCell(account, "bosses.grande8", account.bosses.grande8 || 0)}
+              </td>
+              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+                {renderCell(account, "bosses.medio9", account.bosses.medio9 || 0)}
+              </td>
+              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+                {renderCell(account, "bosses.grande9", account.bosses.grande9 || 0)}
+              </td>
+              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+                {renderCell(account, "bosses.medio10", account.bosses.medio10 || 0)}
+              </td>
+              <td className="py-2 px-3 text-center font-mono text-sm text-slate-300">
+                {renderCell(account, "bosses.grande10", account.bosses.grande10 || 0)}
               </td>
               <td className="py-2 px-4 font-primary text-sm text-mir-gold border-l border-white/5">
                 {renderCell(account, "sala_pico", account.sala_pico)}
@@ -189,9 +257,6 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
               <td className="py-2 px-4 text-right font-mono text-sm text-mir-blue border-l border-white/5">
                 {renderCell(account, "gold", account.gold.toLocaleString('pt-BR'))}
               </td>
-              <td className="py-2 px-4 text-right font-mono font-bold text-sm text-green-400">
-                ${account.total_usd.toFixed(2)}
-              </td>
               <td className="py-2 px-4 text-center border-l border-white/5">
                 <Button
                   variant="ghost"
@@ -205,6 +270,66 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onDelete
               </td>
             </tr>
           ))}
+          
+          {/* Total Row */}
+          {totals && (
+            <tr className="bg-mir-gold/10 border-t-2 border-mir-gold/50 font-bold">
+              <td className="py-3 px-4 text-left text-sm uppercase text-mir-gold border-r border-white/5">
+                Total
+              </td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio2}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande2}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio4}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande4}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio6}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande6}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio7}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande7}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio8}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande8}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio9}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande9}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.medio10}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.grande10}</td>
+              <td className="py-3 px-4 border-l border-white/5"></td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white border-l border-white/5">{totals.xama}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.praca_4f}</td>
+              <td className="py-3 px-3 text-center font-mono text-sm text-white">{totals.cracha_epica}</td>
+              <td className="py-3 px-4 text-right font-mono text-sm text-mir-blue border-l border-white/5">
+                {totals.gold.toLocaleString('pt-BR')}
+              </td>
+              <td className="py-3 px-4 border-l border-white/5"></td>
+            </tr>
+          )}
+          
+          {/* USD Total Row */}
+          {usdTotals && (
+            <tr className="bg-green-900/20 border-t border-green-500/30 font-bold">
+              <td className="py-3 px-4 text-left text-sm uppercase text-green-400 border-r border-white/5">
+                Total USD
+              </td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio2.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande2.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio4.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande4.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio6.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande6.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio7.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande7.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio8.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande8.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio9.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande9.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.medio10.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.grande10.toFixed(2)}</td>
+              <td className="py-3 px-4 border-l border-white/5"></td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400 border-l border-white/5">${usdTotals.xama.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.praca_4f.toFixed(2)}</td>
+              <td className="py-3 px-3 text-center font-mono text-xs text-green-400">${usdTotals.cracha_epica.toFixed(2)}</td>
+              <td className="py-3 px-4 border-l border-white/5"></td>
+              <td className="py-3 px-4 border-l border-white/5"></td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
