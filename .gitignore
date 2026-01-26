@@ -1,17 +1,10 @@
 # Dependencies
 node_modules/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
 
-# Environment variables
+# Build
+frontend/build/
+
+# Environment
 .env.local
 .env.development.local
 .env.test.local
@@ -21,8 +14,6 @@ build/
 .vscode/
 .idea/
 *.swp
-*.swo
-*~
 
 # OS
 .DS_Store
@@ -33,43 +24,9 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-logs/
-*.log.*
 
 # Testing
 coverage/
-.nyc_output/
-.pytest_cache/
-test_reports/
 
-# Build outputs
-frontend/build/
-*.map
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-
-# Supervisor logs
-/var/log/supervisor/
-
-# Scripts
-/scripts/
-
-# Memory and automation
-/memory/
-/.emergent/
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
-desktop/node_modules/electron/dist/electron
--e 
-# Environment files
-*.env
-*.env.*
+# Misc
+.cache/
