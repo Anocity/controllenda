@@ -30,3 +30,7 @@ coverage/
 
 # Misc
 .cache/
+-e 
+# Environment files
+*.env
+*.env.*
