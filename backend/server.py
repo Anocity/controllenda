@@ -8,6 +8,15 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, Dict
 import uuid
 from datetime import datetime, timezone, timedelta
+from contextlib import asynccontextmanager
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+import asyncio
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -17,7 +26,78 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-app = FastAPI()
+# Scheduler instance
+scheduler = AsyncIOScheduler()
+
+async def scheduled_reset_job():
+    """Background job to reset confirmed accounts after 30 days"""
+    logger.info("Running scheduled reset job...")
+    try:
+        now = datetime.now(timezone.utc)
+        thirty_days_ago = now - timedelta(days=30)
+        
+        accounts = await db.accounts.find({
+            "confirmed": True,
+            "confirmed_at": {"$ne": None}
+        }).to_list(1000)
+        
+        reset_count = 0
+        for account in accounts:
+            confirmed_at_str = account.get('confirmed_at')
+            if confirmed_at_str:
+                try:
+                    confirmed_at = datetime.fromisoformat(confirmed_at_str.replace('Z', '+00:00'))
+                    if confirmed_at < thirty_days_ago:
+                        await db.accounts.update_one(
+                            {"id": account['id']},
+                            {"$set": {
+                                "confirmed": False,
+                                "confirmed_at": None,
+                                "bosses": {
+                                    "medio2": 0, "grande2": 0,
+                                    "medio4": 0, "grande4": 0,
+                                    "medio6": 0, "grande6": 0,
+                                    "medio7": 0, "grande7": 0,
+                                    "medio8": 0, "grande8": 0
+                                },
+                                "special_bosses": {
+                                    "xama": 0, "praca_4f": 0, "cracha_epica": 0
+                                },
+                                "gold": 0
+                            }}
+                        )
+                        reset_count += 1
+                        logger.info(f"Reset account: {account.get('name', account['id'])}")
+                except Exception as e:
+                    logger.error(f"Error parsing date for account {account['id']}: {e}")
+        
+        logger.info(f"Scheduled reset complete. Reset {reset_count} account(s).")
+    except Exception as e:
+        logger.error(f"Error in scheduled reset job: {e}")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Manage app lifecycle - start/stop scheduler"""
+    # Start scheduler on startup
+    scheduler.add_job(
+        scheduled_reset_job,
+        IntervalTrigger(hours=6),  # Run every 6 hours
+        id="reset_confirmed_accounts",
+        replace_existing=True
+    )
+    scheduler.start()
+    logger.info("Scheduler started - will check for expired confirmations every 6 hours")
+    
+    # Run once on startup to catch any missed resets
+    asyncio.create_task(scheduled_reset_job())
+    
+    yield
+    
+    # Shutdown scheduler
+    scheduler.shutdown()
+    logger.info("Scheduler stopped")
+
+app = FastAPI(lifespan=lifespan)
 api_router = APIRouter(prefix="/api")
 
 # Models
