@@ -202,22 +202,21 @@ def calculate_account_usd(account: dict, prices: BossPrices) -> float:
     return round(total, 2)
 
 async def check_and_reset_accounts():
-    """Check accounts and reset those confirmed more than 30 days ago"""
+    """Check accounts and reset those confirmed more than 30 days ago - called manually"""
     now = datetime.now(timezone.utc)
     thirty_days_ago = now - timedelta(days=30)
     
-    # Find confirmed accounts older than 30 days
     accounts = await db.accounts.find({
         "confirmed": True,
         "confirmed_at": {"$ne": None}
     }).to_list(1000)
     
+    reset_count = 0
     for account in accounts:
         confirmed_at_str = account.get('confirmed_at')
         if confirmed_at_str:
             confirmed_at = datetime.fromisoformat(confirmed_at_str.replace('Z', '+00:00'))
             if confirmed_at < thirty_days_ago:
-                # Reset account
                 await db.accounts.update_one(
                     {"id": account['id']},
                     {"$set": {
@@ -236,11 +235,26 @@ async def check_and_reset_accounts():
                         "gold": 0
                     }}
                 )
+                reset_count += 1
+    
+    return reset_count
 
 # Routes
 @api_router.get("/")
 async def root():
     return {"message": "MIR4 Account Manager API"}
+
+@api_router.get("/scheduler-status")
+async def get_scheduler_status():
+    """Get the status of the scheduler and next run time"""
+    jobs = scheduler.get_jobs()
+    job_info = []
+    for job in jobs:
+        job_info.append({
+            "id": job.id,
+            "next_run_time": job.next_run_time.isoformat() if job.next_run_time else None
+        })
+    return {"scheduler_running": scheduler.running, "jobs": job_info}
 
 @api_router.get("/boss-prices", response_model=BossPrices)
 async def get_boss_prices():
@@ -272,9 +286,6 @@ async def update_boss_prices(update: BossPricesUpdate):
 
 @api_router.get("/accounts")
 async def get_accounts():
-    # Check and reset old confirmed accounts
-    await check_and_reset_accounts()
-    
     accounts = await db.accounts.find({}, {"_id": 0}).to_list(1000)
     prices = await get_boss_prices()
     
