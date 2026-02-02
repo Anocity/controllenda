@@ -9,7 +9,7 @@ import { toast } from "sonner";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8001";
 const API = `${BACKEND_URL}/api`;
 
-// Materiais na ordem fixa
+// M ateriais na ordem fixa
 const MATERIALS = [
   { key: "anima", name: "Anima" },
   { key: "bugiganga", name: "Bugiganga" },
