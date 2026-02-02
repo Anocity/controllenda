@@ -149,7 +149,8 @@ class Account(BaseModel):
     bosses: BossQuantities
     sala_pico: str = ""
     special_bosses: SpecialBosses
-    legendary_resources: LegendaryResources = Field(default_factory=LegendaryResources)
+    materials: AccountMaterials = Field(default_factory=AccountMaterials)
+    craft_resources: CraftResources = Field(default_factory=CraftResources)
     gold: float = Field(default=0, ge=0)
     confirmed: bool = False
     confirmed_at: Optional[str] = None
