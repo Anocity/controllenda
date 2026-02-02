@@ -59,16 +59,17 @@ export default function Dashboard() {
           praca_4f: 0,
           cracha_epica: 0
         },
-        legendary_resources: {
-          aco_lendario: 0,
-          esfera_lendaria: 0,
-          lunar_lendario: 0,
-          quintessencia_lendaria: 0,
-          bugiganga_lendaria: 0,
-          platina_lendaria: 0,
-          iluminado_lendario: 0,
-          anima_lendaria: 0
+        materials: {
+          anima: { raro: 0, epico: 0, lendario: 0 },
+          bugiganga: { raro: 0, epico: 0, lendario: 0 },
+          lunar: { raro: 0, epico: 0, lendario: 0 },
+          iluminado: { raro: 0, epico: 0, lendario: 0 },
+          quintessencia: { raro: 0, epico: 0, lendario: 0 },
+          esfera: { raro: 0, epico: 0, lendario: 0 },
+          platina: { raro: 0, epico: 0, lendario: 0 },
+          aco: { raro: 0, epico: 0, lendario: 0 }
         },
+        craft_resources: { po: 0, ds: 0, cobre: 0 },
         gold: 0
       };
       
