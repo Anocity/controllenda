@@ -245,6 +245,18 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onConfir
               <td className="py-1 px-2 text-center font-mono">{renderCell(account, "special_bosses.praca_4f", account.special_bosses.praca_4f)}</td>
               <td className="py-1 px-2 text-center font-mono">{renderCell(account, "special_bosses.cracha_epica", account.special_bosses.cracha_epica)}</td>
               <td className="py-1 px-3 font-mono border-l border-white/5">{renderCell(account, "gold", account.gold)}</td>
+              <td className="py-1 px-2 text-center border-l border-white/5">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate(`/account/${account.id}/resources`)}
+                  className="h-7 w-7 p-0 text-mir-gold hover:text-amber-300 hover:bg-white/5"
+                  data-testid={`legendary-btn-${index}`}
+                  title="Objetivos Lendários"
+                >
+                  <Trophy className="w-4 h-4" />
+                </Button>
+              </td>
               <td className="py-1 px-3 text-center border-l border-white/5">
                 <Button
                   variant="ghost"
