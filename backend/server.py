@@ -170,7 +170,8 @@ class AccountUpdate(BaseModel):
     bosses: Optional[BossQuantities] = None
     sala_pico: Optional[str] = None
     special_bosses: Optional[SpecialBosses] = None
-    legendary_resources: Optional[LegendaryResources] = None
+    materials: Optional[AccountMaterials] = None
+    craft_resources: Optional[CraftResources] = None
     gold: Optional[float] = Field(default=None, ge=0)
     confirmed: Optional[bool] = None
 
