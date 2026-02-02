@@ -118,18 +118,28 @@ class SpecialBosses(BaseModel):
     praca_4f: int = Field(default=0, ge=0)
     cracha_epica: int = Field(default=0, ge=0)
 
-class LegendaryResources(BaseModel):
-    # Arma Lendária: 300 Aço L, 100 Esfera L, 100 Lunar L
-    aco_lendario: int = Field(default=0, ge=0)
-    esfera_lendaria: int = Field(default=0, ge=0)
-    lunar_lendario: int = Field(default=0, ge=0)
-    # Torso Lendário: 300 Aço L, 100 Quintessência L, 100 Bugiganga L
-    quintessencia_lendaria: int = Field(default=0, ge=0)
-    bugiganga_lendaria: int = Field(default=0, ge=0)
-    # Colar Lendário: 300 Platina L, 100 Iluminado L, 100 Anima L
-    platina_lendaria: int = Field(default=0, ge=0)
-    iluminado_lendario: int = Field(default=0, ge=0)
-    anima_lendaria: int = Field(default=0, ge=0)
+class MaterialTier(BaseModel):
+    """Quantidade de um material por raridade"""
+    raro: int = Field(default=0, ge=0)
+    epico: int = Field(default=0, ge=0)
+    lendario: int = Field(default=0, ge=0)
+
+class AccountMaterials(BaseModel):
+    """Todos os materiais da conta com 3 raridades cada"""
+    anima: MaterialTier = Field(default_factory=MaterialTier)
+    bugiganga: MaterialTier = Field(default_factory=MaterialTier)
+    lunar: MaterialTier = Field(default_factory=MaterialTier)
+    iluminado: MaterialTier = Field(default_factory=MaterialTier)
+    quintessencia: MaterialTier = Field(default_factory=MaterialTier)
+    esfera: MaterialTier = Field(default_factory=MaterialTier)
+    platina: MaterialTier = Field(default_factory=MaterialTier)
+    aco: MaterialTier = Field(default_factory=MaterialTier)
+
+class CraftResources(BaseModel):
+    """Recursos globais para craft"""
+    po: int = Field(default=0, ge=0)
+    ds: int = Field(default=0, ge=0)
+    cobre: int = Field(default=0, ge=0)
 
 class Account(BaseModel):
     model_config = ConfigDict(extra="ignore")
