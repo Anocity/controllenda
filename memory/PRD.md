@@ -16,6 +16,10 @@ O usuário quer criar um aplicativo web para rastrear suas contas do jogo MIR4.
 6. **Sistema de Confirmação e Reset Automático**:
    - Botão de confirmação por conta
    - Reset automático dos contadores após 30 dias da confirmação
+7. **Objetivos Lendários** (Novo):
+   - Página de recursos por conta
+   - Cálculo automático de qual item lendário está mais perto
+   - Mostra exatamente o que falta para cada objetivo
 
 ## Arquitetura Técnica
 
@@ -35,11 +39,12 @@ O usuário quer criar um aplicativo web para rastrear suas contas do jogo MIR4.
 ├── frontend/
 │   ├── src/
 │   │   ├── pages/
-│   │   │   └── Dashboard.js    # Página principal
+│   │   │   ├── Dashboard.js        # Página principal
+│   │   │   └── AccountResources.js # Objetivos Lendários
 │   │   ├── components/
-│   │   │   ├── EditableTable.js # Tabela editável inline
-│   │   │   └── BossPriceDialog.js # Dialog de preços
-│   │   └── index.css           # CSS global (spinners hidden)
+│   │   │   ├── EditableTable.js    # Tabela editável inline
+│   │   │   └── BossPriceDialog.js  # Dialog de preços
+│   │   └── index.css               # CSS global
 │   └── .env
 └── memory/
     └── PRD.md
@@ -58,6 +63,16 @@ O usuário quer criar um aplicativo web para rastrear suas contas do jogo MIR4.
   "special_bosses": {
     "xama": 0, "praca_4f": 0, "cracha_epica": 0
   },
+  "legendary_resources": {
+    "aco_lendario": 0,
+    "esfera_lendaria": 0,
+    "lunar_lendario": 0,
+    "quintessencia_lendaria": 0,
+    "bugiganga_lendaria": 0,
+    "platina_lendaria": 0,
+    "iluminado_lendario": 0,
+    "anima_lendaria": 0
+  },
   "sala_pico": "string",
   "gold": 0,
   "confirmed": false,
@@ -66,10 +81,19 @@ O usuário quer criar um aplicativo web para rastrear suas contas do jogo MIR4.
 }
 ```
 
+### Receitas dos Objetivos Lendários
+| Objetivo | Ingrediente 1 | Ingrediente 2 | Ingrediente 3 |
+|----------|---------------|---------------|---------------|
+| Arma Lendária | 300 Aço L | 100 Esfera L | 100 Lunar L |
+| Torso Lendário | 300 Aço L | 100 Quintessência L | 100 Bugiganga L |
+| Colar Lendário | 300 Platina L | 100 Iluminado L | 100 Anima L |
+
+**Cálculo de Progresso**: Por gargalo (mínimo dos 3 ingredientes)
+
 ### API Endpoints
 - `GET /api/accounts` - Lista todas as contas
 - `POST /api/accounts` - Cria nova conta
-- `PUT /api/accounts/{id}` - Atualiza conta
+- `PUT /api/accounts/{id}` - Atualiza conta (incluindo legendary_resources)
 - `DELETE /api/accounts/{id}` - Deleta conta
 - `POST /api/accounts/{id}/confirm` - Confirma conta
 - `GET /api/boss-prices` - Obtém preços USD
@@ -89,6 +113,10 @@ O usuário quer criar um aplicativo web para rastrear suas contas do jogo MIR4.
 - [x] Reset automático após 30 dias (APScheduler - executa a cada 6h)
 - [x] Dialog de configuração de preços USD
 - [x] Persistência em MongoDB
+- [x] **Página de Recursos Lendários** (/account/:id/resources)
+- [x] **Cálculo de Objetivos Lendários** (Arma, Torso, Colar)
+- [x] **Identificação do objetivo mais próximo**
+- [x] **Exibição de itens faltando**
 
 ## Backlog Futuro
 
