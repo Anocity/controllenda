@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Trash2, CheckCircle2, Circle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Trash2, CheckCircle2, Circle, Trophy } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 export default function EditableTable({ accounts, bossPrices, onUpdate, onConfirm, onDelete, onRefresh }) {
+  const navigate = useNavigate();
   const [editingCell, setEditingCell] = useState(null);
   const [tempValue, setTempValue] = useState("");
 
