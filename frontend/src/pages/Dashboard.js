@@ -59,6 +59,16 @@ export default function Dashboard() {
           praca_4f: 0,
           cracha_epica: 0
         },
+        legendary_resources: {
+          aco_lendario: 0,
+          esfera_lendaria: 0,
+          lunar_lendario: 0,
+          quintessencia_lendaria: 0,
+          bugiganga_lendaria: 0,
+          platina_lendaria: 0,
+          iluminado_lendario: 0,
+          anima_lendaria: 0
+        },
         gold: 0
       };
       
