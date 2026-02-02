@@ -303,6 +303,7 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onConfir
               <td className="py-2 px-2 text-center font-mono text-xs text-white">{totals.praca_4f}</td>
               <td className="py-2 px-2 text-center font-mono text-xs text-white">{totals.cracha_epica}</td>
               <td className="py-2 px-3 text-right font-mono text-xs text-mir-blue border-l border-white/5">{totals.gold.toLocaleString('pt-BR')}</td>
+              <td className="py-2 px-2 border-l border-white/5"></td>
               <td className="py-2 px-3 border-l border-white/5"></td>
               <td className="py-2 px-3 border-l border-white/5"></td>
             </tr>
@@ -327,6 +328,7 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onConfir
               <td className="py-2 px-2 text-center font-mono text-[10px] text-green-400">${usdTotals.praca_4f.toFixed(2)}</td>
               <td className="py-2 px-2 text-center font-mono text-[10px] text-green-400">${usdTotals.cracha_epica.toFixed(2)}</td>
               <td className="py-2 px-3 border-l border-white/5"></td>
+              <td className="py-2 px-2 border-l border-white/5"></td>
               <td className="py-2 px-3 border-l border-white/5"></td>
               <td className="py-2 px-3 border-l border-white/5"></td>
             </tr>
