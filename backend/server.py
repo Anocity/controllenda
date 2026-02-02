@@ -118,6 +118,19 @@ class SpecialBosses(BaseModel):
     praca_4f: int = Field(default=0, ge=0)
     cracha_epica: int = Field(default=0, ge=0)
 
+class LegendaryResources(BaseModel):
+    # Arma Lendária: 300 Aço L, 100 Esfera L, 100 Lunar L
+    aco_lendario: int = Field(default=0, ge=0)
+    esfera_lendaria: int = Field(default=0, ge=0)
+    lunar_lendario: int = Field(default=0, ge=0)
+    # Torso Lendário: 300 Aço L, 100 Quintessência L, 100 Bugiganga L
+    quintessencia_lendaria: int = Field(default=0, ge=0)
+    bugiganga_lendaria: int = Field(default=0, ge=0)
+    # Colar Lendário: 300 Platina L, 100 Iluminado L, 100 Anima L
+    platina_lendaria: int = Field(default=0, ge=0)
+    iluminado_lendario: int = Field(default=0, ge=0)
+    anima_lendaria: int = Field(default=0, ge=0)
+
 class Account(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
@@ -126,6 +139,7 @@ class Account(BaseModel):
     bosses: BossQuantities
     sala_pico: str = ""
     special_bosses: SpecialBosses
+    legendary_resources: LegendaryResources = Field(default_factory=LegendaryResources)
     gold: float = Field(default=0, ge=0)
     confirmed: bool = False
     confirmed_at: Optional[str] = None
@@ -136,6 +150,7 @@ class AccountCreate(BaseModel):
     bosses: BossQuantities
     sala_pico: str = ""
     special_bosses: SpecialBosses
+    legendary_resources: LegendaryResources = Field(default_factory=LegendaryResources)
     gold: float = Field(default=0, ge=0)
 
 class AccountUpdate(BaseModel):
@@ -143,6 +158,7 @@ class AccountUpdate(BaseModel):
     bosses: Optional[BossQuantities] = None
     sala_pico: Optional[str] = None
     special_bosses: Optional[SpecialBosses] = None
+    legendary_resources: Optional[LegendaryResources] = None
     gold: Optional[float] = Field(default=None, ge=0)
     confirmed: Optional[bool] = None
 
