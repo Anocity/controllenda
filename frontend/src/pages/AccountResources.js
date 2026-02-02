@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ArrowLeft, Trophy, Sword, Shield, Gem } from "lucide-react";
@@ -274,6 +274,27 @@ export default function AccountResources() {
     }
   };
 
+  // Auto-save com debounce (salva 500ms após última alteração)
+  const saveTimeoutRef = useRef(null);
+  
+  useEffect(() => {
+    if (!account) return;
+    
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    
+    saveTimeoutRef.current = setTimeout(() => {
+      saveData();
+    }, 500);
+    
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [localMaterials, localCraftResources]);
+
   // Calcula objetivos usando useMemo para performance
   const objectiveResults = useMemo(() => {
     const results = {};
@@ -366,7 +387,6 @@ export default function AccountResources() {
                       type="number"
                       value={localMaterials[mat.key]?.[tier] || 0}
                       onChange={(e) => handleMaterialChange(mat.key, tier, e.target.value)}
-                      onBlur={saveData}
                       className={`h-7 text-xs text-center bg-mir-obsidian border-white/10 ${
                         tier === "raro" ? "text-blue-400" : 
                         tier === "epico" ? "text-purple-400" : "text-amber-400"
@@ -393,7 +413,6 @@ export default function AccountResources() {
                       type="number"
                       value={localCraftResources[res.key] || 0}
                       onChange={(e) => handleCraftResourceChange(res.key, e.target.value)}
-                      onBlur={saveData}
                       className={`h-7 text-xs text-center bg-mir-obsidian border-white/10 ${res.color}`}
                       data-testid={`craft-${res.key}`}
                     />
