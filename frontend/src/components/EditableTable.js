@@ -212,6 +212,7 @@ export default function EditableTable({ accounts, bossPrices, onUpdate, onConfir
             <th className="py-2 px-2 text-center text-[10px] uppercase tracking-wider font-secondary text-slate-400">Praça</th>
             <th className="py-2 px-2 text-center text-[10px] uppercase tracking-wider font-secondary text-slate-400">Cracha</th>
             <th className="py-2 px-3 text-right text-[10px] uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">Gold</th>
+            <th className="py-2 px-2 text-center text-[10px] uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">Lend</th>
             <th className="py-2 px-3 text-center text-[10px] uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">Conf</th>
             <th className="py-2 px-3 text-center text-[10px] uppercase tracking-wider font-secondary text-slate-400 border-l border-white/5">Ações</th>
           </tr>
